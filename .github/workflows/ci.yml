@@ -47,6 +47,6 @@ jobs:
           sam deploy \
             --region eu-west-2 \
             --stack-name wednesdaybot \
-            --parameter-overrides "MastodonAccessToken=${{ secrets.MASTODON_ACCESS_TOKEN }}" \
+            --parameter-overrides "ParameterKey=MastodonAccessToken,ParameterValue=${{ secrets.MASTODON_ACCESS_TOKEN }}" \
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset

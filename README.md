@@ -12,7 +12,7 @@ curl https://mise.run | sh
 
 # Install Python and dependencies
 mise install
-uv sync --extra dev
+mise run install-dev
 ```
 
 ## Development

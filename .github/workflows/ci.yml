@@ -9,9 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: mise-action/mise-action@v3
-        with:
-          version: latest
+      - uses: jdx/mise-action@v3
 
       - name: Install dependencies
         run: mise run install-dev
@@ -26,15 +24,20 @@ jobs:
     needs: test
     runs-on: ubuntu-24.04-arm
     if: github.ref == 'refs/heads/main'
+    environment: prod
     steps:
       - uses: actions/checkout@v6
 
-      - uses: mise-action/mise-action@v3
-        with:
-          version: latest
+      - uses: jdk/mise-action@v3
 
       - name: Build
         run: mise run build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${vars.AWS_ROLE}
+          aws-region: eu-west-2
 
       - name: Deploy
         run: |
@@ -44,6 +47,3 @@ jobs:
             --parameter-overrides "MastodonAccessToken=${{ secrets.MASTODON_ACCESS_TOKEN }}" \
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

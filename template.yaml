@@ -2,6 +2,16 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: Wednesday Bot - Mastodon bot that posts quotes on Wednesdays
 
+Parameters:
+  MastodonAccessToken:
+    Type: String
+    NoEcho: true
+    Description: Mastodon API access token
+  MastodonBaseUrl:
+    Type: String
+    Default: "https://mastodon.social/"
+    Description: Mastodon instance base URL
+
 Globals:
   Function:
     Runtime: python3.12
@@ -17,8 +27,8 @@ Resources:
       CodeUri: ./
       Environment:
         Variables:
-          MASTODON_ACCESS_TOKEN: ""
-          MASTODON_BASE_URL: "https://mastodon.social/"
+          MASTODON_ACCESS_TOKEN: !Ref MastodonAccessToken
+          MASTODON_BASE_URL: !Ref MastodonBaseUrl
       Events:
         WednesdaySchedule:
           Type: Schedule

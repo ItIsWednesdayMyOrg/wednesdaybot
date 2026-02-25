@@ -30,6 +30,24 @@ def test_load_quotes(setup_quote_file):
     assert quotes == expected_list
 
 
+def test_load_quotes_missing_and_empty_attribution():
+    temp_path = "/tmp/" + str(uuid.uuid4())
+    try:
+        with open(temp_path, "w") as temp_file:
+            temp_file.write("- Text: quote with missing attribution\n")
+            temp_file.write("- Text: quote with empty attribution\n  Attribution:\n")
+            temp_file.write("- Text: quote with attribution\n  Attribution: Someone\n")
+
+        quotes = load_quotes(temp_path)
+        assert quotes == [
+            {"quote": "quote with missing attribution", "attribution": ""},
+            {"quote": "quote with empty attribution", "attribution": ""},
+            {"quote": "quote with attribution", "attribution": "Someone"},
+        ]
+    finally:
+        os.remove(temp_path)
+
+
 @freeze_time("2024-08-21")
 def test_is_it_wednesday_positive():
     assert is_it_wednesday() is True

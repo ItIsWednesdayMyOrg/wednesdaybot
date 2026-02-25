@@ -8,7 +8,10 @@ def load_quotes(path="./wednesday.yaml"):
     with open(path) as f:
         wednesday_list = yaml.safe_load(f)
     return [
-        {"quote": item["Text"], "attribution": item.get("Attribution", "")}
+        {
+            "quote": item["Text"],
+            "attribution": item.get("Attribution") or "",
+        }
         for item in wednesday_list
     ]
 

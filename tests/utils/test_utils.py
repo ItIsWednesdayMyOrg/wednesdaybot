@@ -10,9 +10,9 @@ from utils.utils import is_it_wednesday, load_quotes
 @pytest.fixture
 def setup_quote_file():
     temp_path = "/tmp/" + str(uuid.uuid4())
-    with open(temp_path, "a") as temp_file:
-        temp_file.write("quote number one;author\n")
-        temp_file.write("quote number two;author two\n")
+    with open(temp_path, "w") as temp_file:
+        temp_file.write("- Text: quote number one\n  Attribution: author\n")
+        temp_file.write("- Text: quote number two\n  Attribution: author two\n")
     yield temp_path
     os.remove(temp_path)
 

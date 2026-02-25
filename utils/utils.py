@@ -1,22 +1,16 @@
-import csv
 import os
 from datetime import datetime
 
+import yaml
 
-def load_quotes(path="./wednesday.csv"):
-    # Read in the CSV to a list of dicts
-    wednesday_list = []
-    with open(path, newline="") as csvfile:
-        reader = csv.DictReader(
-            csvfile, delimiter=";", fieldnames=["quote", "attribution"]
-        )
-        for row in reader:
-            if not row["attribution"]:
-                row["attribution"] = ""
-            wednesday_list.append(
-                {"quote": row["quote"], "attribution": row["attribution"]}
-            )
-    return wednesday_list
+
+def load_quotes(path="./wednesday.yaml"):
+    with open(path) as f:
+        wednesday_list = yaml.safe_load(f)
+    return [
+        {"quote": item["Text"], "attribution": item.get("Attribution", "")}
+        for item in wednesday_list
+    ]
 
 
 def is_it_wednesday(fake_wednesday=False):

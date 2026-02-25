@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: jdx/mise-action@v3
+
+      - name: Install dependencies
+        run: mise run install-dev
+
+      - name: Run tests
+        run: mise run test
+
+      - name: Run linter
+        run: mise run lint
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-24.04-arm
+    if: github.ref == 'refs/heads/main'
+    environment: prod
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: jdk/mise-action@v3
+
+      - name: Build
+        run: mise run build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${vars.AWS_ROLE}
+          aws-region: eu-west-2
+
+      - name: Deploy
+        run: |
+          sam deploy \
+            --region eu-west-2 \
+            --stack-name wednesdaybot \
+            --parameter-overrides "MastodonAccessToken=${{ secrets.MASTODON_ACCESS_TOKEN }}" \
+            --capabilities CAPABILITY_IAM \
+            --no-confirm-changeset

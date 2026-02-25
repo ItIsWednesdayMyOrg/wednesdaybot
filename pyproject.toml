@@ -1,0 +1,31 @@
+[project]
+name = "wednesdaybot"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "Mastodon.py",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "flake8",
+    "mypy",
+    "pytest",
+    "pytest-cov",
+    "freezegun",
+]
+
+[tool.black]
+target-version = ["py312"]
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+python_version = "3.12"
+src = ["src", "utils"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

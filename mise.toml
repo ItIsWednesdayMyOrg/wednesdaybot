@@ -1,0 +1,47 @@
+[env]
+PYTHONPATH = "src"
+
+[tools]
+python = "3.12"
+uv = "latest"
+aws-sam-cli = "latest"
+
+[tasks.install]
+description = "Install dependencies"
+alias = "i"
+run = "uv sync"
+
+[tasks.install-dev]
+description = "Install dev dependencies"
+run = "uv sync --extra dev"
+
+[tasks.upgrade]
+description = "Upgrade dependencies"
+run = "uv sync --upgrade"
+
+[tasks.format]
+run = [
+    "uv run black src/ utils/ tests/",
+    "uv run isort --profile black src/ utils/ tests/",
+]
+
+[tasks.lint]
+run = [
+    "uv run black --check src/ utils/ tests/",
+    "uv run isort --profile black --check src/ utils/ tests/",
+    "uv run flake8 src/ utils/ tests/",
+    "uv run mypy src/ utils/",
+]
+
+[tasks.test]
+run = "uv run pytest -v --cov --cov-report xml:coverage.xml --cov-report term tests/"
+
+[tasks.build]
+run = "uv pip compile pyproject.toml -o requirements.txt && sam build --region eu-west-2"
+
+[tasks.deploy]
+run = [
+    "uv pip compile pyproject.toml -o requirements.txt",
+    "sam build --region eu-west-2",
+    "sam deploy --guided",
+]

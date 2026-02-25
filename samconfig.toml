@@ -1,0 +1,13 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "wednesdaytest"
+confirm_changeset = true
+resolve_s3 = true
+s3_prefix = "wednesdaytest"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+
+[default.global.parameters]
+region = "eu-west-2"

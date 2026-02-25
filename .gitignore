@@ -1,7 +1,9 @@
 node_modules/
 .venv/
 .serverless/
+.aws-sam/
 .env
 __pycache__/
 .coverage
 coverage.xml
+requirements.txt

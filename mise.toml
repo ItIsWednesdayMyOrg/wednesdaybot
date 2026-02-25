@@ -4,6 +4,7 @@ PYTHONPATH = "src"
 [tools]
 python = "3.12"
 uv = "latest"
+aws-sam-cli = "latest"
 
 [tasks.install]
 description = "Install dependencies"
@@ -35,5 +36,12 @@ run = [
 [tasks.test]
 run = "uv run pytest -v --cov --cov-report xml:coverage.xml --cov-report term tests/"
 
+[tasks.build]
+run = "uv pip compile pyproject.toml -o requirements.txt && sam build --region eu-west-2"
+
 [tasks.deploy]
-run = "sls deploy"
+run = [
+    "uv pip compile pyproject.toml -o requirements.txt",
+    "sam build --region eu-west-2",
+    "sam deploy --guided",
+]

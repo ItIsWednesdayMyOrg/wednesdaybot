@@ -30,7 +30,13 @@ mise run lint
 
 ## Deployment
 
+Uses [AWS SAM](https://aws.amazon.com/serverless/sam/) for deployment.
+
 ```bash
+# Build the SAM application
+mise run build
+
+# Deploy (runs sam build then sam deploy --guided)
 mise run deploy
 ```
 

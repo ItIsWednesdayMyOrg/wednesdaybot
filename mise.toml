@@ -5,6 +5,7 @@ PYTHONPATH = "src"
 python = "3.12"
 uv = "latest"
 aws-sam-cli = "latest"
+yamllint = "latest"
 
 [tasks.install]
 description = "Install dependencies"
@@ -31,6 +32,7 @@ run = [
     "uv run isort --profile black --check src/ utils/ tests/",
     "uv run flake8 src/ utils/ tests/",
     "uv run mypy src/ utils/",
+    "yamllint wednesda.yaml",
 ]
 
 [tasks.test]

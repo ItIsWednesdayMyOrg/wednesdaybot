@@ -4,7 +4,7 @@ from datetime import datetime
 import yaml
 
 
-def load_quotes(path="./wednesday.yaml"):
+def load_quotes(path="./wednesda.yaml"):
     with open(path) as f:
         wednesday_list = yaml.safe_load(f)
     return [
